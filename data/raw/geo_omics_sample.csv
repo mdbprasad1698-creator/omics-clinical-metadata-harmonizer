@@ -1,4 +1,21 @@
-series_id,sample_accession,sample_title,organism,platform_id,platform_name,library_strategy,linked_clinical_trial
-GSE96058,GSM2528079,F1,Homo sapiens,GPL11154,Illumina HiSeq 2000,RNA-seq,NCT02306096
-GSE96058,GSM2528080,F2,Homo sapiens,GPL11154,Illumina HiSeq 2000,RNA-seq,NCT02306096
-GSE96058,GSM2528081,F3,Homo sapiens,GPL18573,Illumina NextSeq 500,RNA-seq,NCT02306096
+series_id,sample_accession,sample_title,organism,platform_name,library_strategy,linked_clinical_trial,source_name,scan-b_external_id,er_status,her2_status,tumor_size
+GSE96058,GSM2528079,F1,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008818.C008840.S000215.l.r.m2.c.lib.g.k.a.t,NA,0,9
+GSE96058,GSM2528080,F2,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008769.C008792.S000250.l.r.m.c.lib.g.k.a.t,1,0,14
+GSE96058,GSM2528081,F3,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008568.C008577.S000424.l.r.m3.c.lib.g.k.a.t,1,0,27
+GSE96058,GSM2528082,F4,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008909.C009000.S000084.l.r.m.c.lib.g.k.a.t,1,1,51
+GSE96058,GSM2528083,F5,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008781.C008782.S000260.l.r.m.c.lib.g.k.a.t,1,0,60
+GSE96058,GSM2528084,F6,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008815.C008853.S000200.l.r.m2.c.lib.g.k.a.t,NA,0,13
+GSE96058,GSM2528085,F7,Homo sapiens,NextSeq 500,RNA-seq,NCT02306096,Primary breast tumor,Q008861.C008874.S000184.l2.r.m.c.lib.g.k.a.t,1,0,18
+GSE96058,GSM2528086,F8,Homo sapiens,NextSeq 500,RNA-seq,NCT02306096,Primary breast tumor,Q008860.C008864.S000189.l2.r.m2.c.lib.g.k.a.t,1,0,24
+GSE96058,GSM2528087,F9,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008814.C008810.S000239.l.r.m2.c.lib.g.k.a.t,1,1,10
+GSE96058,GSM2528088,F10,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008663.C008685.S000340.l.r.m2.c.lib.g.k.a.t,1,1,6
+GSE96058,GSM2528089,F11,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008807.C008818.S000231.l.r.m2.c.lib.g.k.a.t,1,0,16
+GSE96058,GSM2528090,F12,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008618.C008623.S000386.l.r.m2.c.lib.g.k.a.t,1,1,17
+GSE96058,GSM2528091,F13,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008842.C008852.S000201.l.r.m3.c.lib.g.k.a.t,1,0,32
+GSE96058,GSM2528092,F14,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008819.C008850.S000203.l.r.m2.c.lib.g.k.a.t,1,0,15
+GSE96058,GSM2528093,F15,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008838.C008839.S000216.l.r.m2.c.lib.g.k.a.t,NA,0,17
+GSE96058,GSM2528094,F16,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008846.C008897.S000160.l.r.m.c.lib.g.k.a.t,NA,0,12
+GSE96058,GSM2528095,F17,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008784.C008823.S000226.l.r.m2.c.lib.g.k.a.t,1,0,15
+GSE96058,GSM2528096,F18,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008946.C008945.S000138.l.r.m.c.lib.g.k.a.t,1,0,11
+GSE96058,GSM2528097,F19,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008576.C008585.S000422.l.r.m3.c.lib.g.k.a.t,1,0,14
+GSE96058,GSM2528098,F20,Homo sapiens,HiSeq 2000,RNA-seq,NCT02306096,Primary breast tumor,Q008916.C008929.S000155.l.r.m.c.lib.g.k.a.t,1,0,20

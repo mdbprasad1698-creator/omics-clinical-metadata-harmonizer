@@ -64,8 +64,16 @@ across all four.
 
 - Uses Gemini's free tier (not OpenAI), due to free-tier availability
 - Free tier has a daily request quota; large-scale runs would need a paid tier
-- The condition/indication join uses substring matching, not exact
-  match, since the same disease is described at different specificity
-  levels across sources (e.g. "Breast Cancer" vs "HER2-positive breast cancer")
-- Currently uses small representative samples rather than full downloaded
-  datasets; sources are real and correctly structured, but not exhaustive
+- The `condition` ↔ `indication` join uses substring matching first, with
+  an LLM-based semantic fallback (`values_match()`) when substring
+  matching finds nothing. This was necessary in practice: the real,
+  live-pulled ClinicalTrials.gov record uses the MeSH term "Breast
+  Neoplasms" while DrugBank uses "breast cancer." Direct equivalence
+  checking initially failed too, since the LLM correctly recognized
+  these terms have a parent/subtype relationship, not identical meaning —
+  the fallback question was refined to check clinical relevance rather
+  than strict equivalence, which resolved it correctly.
+- GEO and ClinicalTrials.gov data are now pulled from live sources
+  (GSE96058 SOFT file, ClinicalTrials.gov API respectively). SRA
+  instrument data and DrugBank data are still small representative
+  samples, not yet pulled from live sources.

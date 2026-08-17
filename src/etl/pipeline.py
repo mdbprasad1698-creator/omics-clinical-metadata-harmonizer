@@ -5,6 +5,13 @@ Purpose:
 Orchestrates the full harmonization run: load raw sources, normalize
 them, load human-approved matches, and use those matches to join all
 four sources into one unified catalog.
+
+The DrugBank join first tries exact substring matching on condition/
+indication values, then falls back to an LLM-based semantic check
+(values_match) when substring matching finds nothing - this catches
+cases like "Breast Neoplasms" (real ClinicalTrials.gov MeSH term) vs
+"breast cancer" (DrugBank's colloquial term), which are the same
+concept but share no substring.
 """
 import json
 
@@ -13,6 +20,7 @@ import pandas as pd
 from src.config import DATA_PROCESSED
 from src.etl.ingest import load_all
 from src.etl.normalize import normalize_source
+from src.matching.llm_matcher import values_match
 
 
 def load_reviewed_matches() -> list[dict]:
@@ -69,7 +77,8 @@ def build_harmonized_catalog() -> pd.DataFrame:
             suffixes=("", "_trial"),
         )
 
-    # Join 3: catalog -> drugbank (fuzzy substring join, e.g. condition/indication)
+    # Join 3: catalog -> drugbank (substring match, with LLM fallback for
+    # cases like "Breast Neoplasms" vs "breast cancer")
     ct_db_match = find_match(matches, "clinical_trials", "drugbank")
     if ct_db_match:
         left_col = ct_db_match["field_a"] if ct_db_match["source_a"] == "clinical_trials" else ct_db_match["field_b"]
@@ -83,6 +92,20 @@ def build_harmonized_catalog() -> pd.DataFrame:
         for _, cat_row in catalog.iterrows():
             condition_value = cat_row[left_col]
             related_drugs = drugbank_df[drugbank_df[right_col].str.contains(condition_value, na=False)]
+
+            if len(related_drugs) == 0:
+                # Substring match failed - fall back to LLM semantic check
+                semantic_matches = []
+                for _, drug_row in drugbank_df.iterrows():
+                    if values_match(
+                        condition_value,
+                        drug_row[right_col],
+                        context="medical condition/disease terminology",
+                    ):
+                        semantic_matches.append(drug_row)
+                if semantic_matches:
+                    related_drugs = pd.DataFrame(semantic_matches)
+
             if len(related_drugs) == 0:
                 merged_row = {**cat_row.to_dict(), **{c: None for c in drugbank_df.columns}}
                 matched_rows.append(merged_row)
@@ -90,6 +113,7 @@ def build_harmonized_catalog() -> pd.DataFrame:
                 for _, drug_row in related_drugs.iterrows():
                     merged_row = {**cat_row.to_dict(), **drug_row.to_dict()}
                     matched_rows.append(merged_row)
+
         catalog = pd.DataFrame(matched_rows)
 
     return catalog

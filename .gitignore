@@ -2,4 +2,5 @@ venv/
 __pycache__/
 *.pyc
 .env
-.DS_Store
+.DS_Storedata/raw/GSE96058_family.soft
+data/raw/GSE96058_family.soft.gz

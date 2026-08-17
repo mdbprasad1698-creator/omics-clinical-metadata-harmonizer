@@ -7,10 +7,15 @@ have no shared column names. For each pair of fields it thinks are
 conceptually related, it returns a confidence score and a short reason -
 it does NOT apply the match itself, just proposes it for review.
 
+Also provides values_match(), a value-level semantic check used as a
+fallback when exact/substring matching between two values fails - e.g.
+recognizing "Breast Neoplasms" and "breast cancer" are the same concept.
+
 Uses Google's Gemini API (free tier) via the current google-genai package.
 """
 import json
 import os
+import time
 
 from google import genai
 
@@ -38,6 +43,10 @@ Only propose matches you can justify. Respond ONLY with a JSON array.
 No preamble, no markdown fences.
 """
 
+# Cache for values_match() so identical value pairs are only checked once
+# per program run instead of once per row - keeps API usage minimal
+_VALUES_MATCH_CACHE: dict[tuple[str, str, str], bool] = {}
+
 
 def _describe_source(df) -> str:
     lines = []
@@ -47,7 +56,7 @@ def _describe_source(df) -> str:
     return "\n".join(lines)
 
 
-def propose_matches(source_a_name, df_a, source_b_name, df_b) -> list[dict]:
+def propose_matches(source_a_name, df_a, source_b_name, df_b) -> list[dict] | None:
     client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
     prompt = MATCH_PROMPT.format(
@@ -57,19 +66,18 @@ def propose_matches(source_a_name, df_a, source_b_name, df_b) -> list[dict]:
         source_b_fields=_describe_source(df_b),
     )
 
-    import time
-
     max_retries = 3
+    response = None
     for attempt in range(max_retries):
         try:
             response = client.models.generate_content(
-                model="gemini-flash-little-latest",
+                model="gemini-flash-lite-latest",
                 contents=prompt,
             )
             break
         except Exception as e:
             if attempt < max_retries - 1:
-                wait = 5 * (attempt + 1)
+                wait = 15 * (attempt + 1)
                 print(f"  API error ({e}). Retrying in {wait}s...")
                 time.sleep(wait)
             else:
@@ -92,6 +100,46 @@ def propose_matches(source_a_name, df_a, source_b_name, df_b) -> list[dict]:
     return matches
 
 
+def values_match(value_a: str, value_b: str, context: str = "") -> bool:
+    """
+    Ask the LLM whether two values represent the same real-world concept,
+    even if the literal strings differ (e.g. medical synonyms like
+    "Breast Neoplasms" vs "breast cancer"). Used as a fallback when
+    exact/substring matching fails. Results are cached per (value_a,
+    value_b, context) so repeated calls with the same pair don't waste
+    API quota.
+    """
+    cache_key = (value_a.lower(), value_b.lower(), context)
+    if cache_key in _VALUES_MATCH_CACHE:
+        return _VALUES_MATCH_CACHE[cache_key]
+
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+    prompt = f"""Is Value B clinically relevant to Value A - either the same
+concept, a subtype/subset of it, or otherwise medically related enough that
+someone researching Value A would want to know about Value B?
+{f"Context: {context}" if context else ""}
+
+Value A: "{value_a}"
+Value B: "{value_b}"
+
+Respond with only one word: YES or NO."""
+
+    try:
+        response = client.models.generate_content(
+            model="gemini-flash-lite-latest",
+            contents=prompt,
+        )
+        answer = response.text.strip().upper()
+        result = answer.startswith("YES")
+    except Exception as e:
+        print(f"  values_match API error: {e}")
+        result = False
+
+    _VALUES_MATCH_CACHE[cache_key] = result
+    return result
+
+
 if __name__ == "__main__":
     from src.etl.ingest import load_all
 
@@ -101,6 +149,6 @@ if __name__ == "__main__":
     else:
         sources = load_all()
         matches = propose_matches("geo", sources["geo"], "clinical_trials", sources["clinical_trials"])
-        for m in matches:
+        for m in matches or []:
             print(f"{m['field_a']}  <->  {m['field_b']}   (confidence={m['confidence']})")
             print(f"   reason: {m['rationale']}\n")

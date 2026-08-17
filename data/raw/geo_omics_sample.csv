@@ -1,0 +1,4 @@
+series_id,sample_accession,sample_title,organism,platform_id,platform_name,library_strategy,linked_clinical_trial
+GSE96058,GSM2528079,F1,Homo sapiens,GPL11154,Illumina HiSeq 2000,RNA-seq,NCT02306096
+GSE96058,GSM2528080,F2,Homo sapiens,GPL11154,Illumina HiSeq 2000,RNA-seq,NCT02306096
+GSE96058,GSM2528081,F3,Homo sapiens,GPL18573,Illumina NextSeq 500,RNA-seq,NCT02306096

@@ -1,0 +1,4 @@
+drugbank_id,drug_name,cas_number,drug_type,target_gene,indication,mechanism_of_action
+DB00619,Imatinib,152459-95-5,small molecule,ABL1,Chronic myeloid leukemia,Tyrosine kinase inhibitor
+DB00072,Trastuzumab,180288-69-1,biotech,ERBB2,HER2-positive breast cancer,Monoclonal antibody targeting HER2 receptor
+DB01259,Lapatinib,231277-92-2,small molecule,ERBB2,HER2-positive breast cancer,Dual tyrosine kinase inhibitor

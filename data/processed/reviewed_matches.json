@@ -1,0 +1,42 @@
+[
+  {
+    "field_a": "linked_clinical_trial",
+    "field_b": "nct_id",
+    "confidence": 1.0,
+    "rationale": "Both fields store the unique ClinicalTrials.gov National Clinical Trial (NCT) accession identifier.",
+    "source_a": "geo",
+    "source_b": "clinical_trials"
+  },
+  {
+    "field_a": "sample_accession",
+    "field_b": "sample_accession",
+    "confidence": 1.0,
+    "rationale": "Both fields store identical GEO sample accession identifiers (GSM numbers) referring to the biological sample.",
+    "source_a": "geo",
+    "source_b": "sra_instrument"
+  },
+  {
+    "field_a": "platform_name",
+    "field_b": "instrument_model",
+    "confidence": 0.95,
+    "rationale": "Both fields record the specific sequencing machine model used to generate the dataset.",
+    "source_a": "geo",
+    "source_b": "sra_instrument"
+  },
+  {
+    "field_a": "library_strategy",
+    "field_b": "library_strategy",
+    "confidence": 1.0,
+    "rationale": "Both fields describe the high-level experimental sequencing protocol or assay applied to the library.",
+    "source_a": "geo",
+    "source_b": "sra_instrument"
+  },
+  {
+    "field_a": "condition",
+    "field_b": "indication",
+    "confidence": 0.88,
+    "rationale": "Both fields represent the medical disease or health condition being studied or treated by a therapeutic intervention.",
+    "source_a": "clinical_trials",
+    "source_b": "drugbank"
+  }
+]

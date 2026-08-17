@@ -1,0 +1,4 @@
+run_accession,experiment_accession,sample_accession,bioproject_id,instrument_model,instrument_platform,library_strategy,library_layout,spots,bases,center_name
+SRR5490001,SRX5490001,GSM2528079,PRJNA378692,Illumina HiSeq 2000,ILLUMINA,RNA-Seq,PAIRED,45000000,9000000000,Lund University
+SRR5490002,SRX5490002,GSM2528080,PRJNA378692,Illumina HiSeq 2000,ILLUMINA,RNA-Seq,PAIRED,42000000,8400000000,Lund University
+SRR5490003,SRX5490003,GSM2528081,PRJNA378692,Illumina NextSeq 500,ILLUMINA,RNA-Seq,PAIRED,38000000,7600000000,Lund University

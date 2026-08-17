@@ -61,9 +61,10 @@ explicitly in any single source — they're derived by matching fields
 across all four.
 
 ## Known limitations
-
-- Uses Gemini's free tier (not OpenAI), due to free-tier availability
-- Free tier has a daily request quota; large-scale runs would need a paid tier
+ - Uses model-agnostic AI-assisted matching. Currently implemented with
+  Google's Gemini API; the matching logic (prompt design, confidence
+  scoring, JSON parsing) is provider-independent and would work with
+  OpenAI's API with a straightforward model-client swap.
 - The `condition` ↔ `indication` join uses substring matching first, with
   an LLM-based semantic fallback (`values_match()`) when substring
   matching finds nothing. This was necessary in practice: the real,
